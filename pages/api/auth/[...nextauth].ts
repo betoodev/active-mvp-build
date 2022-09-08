@@ -11,14 +11,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
-      
-    }),
-  ],
+                   }),
+          ],
+
   pages: {
     signIn: `/login`,
     verifyRequest: `/login`,
     error: "/login", // Error code passed in query string as ?error=
   },
+  
   adapter: PrismaAdapter(prisma),
   callbacks: {
     session: ({ session, user }) => ({

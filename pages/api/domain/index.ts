@@ -1,6 +1,5 @@
 import { createDomain, deleteDomain } from "@/lib/api";
 import { unstable_getServerSession } from "next-auth/next";
-
 import { authOptions } from "../auth/[...nextauth]";
 import { HttpMethod } from "@/types";
 
