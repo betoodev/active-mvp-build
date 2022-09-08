@@ -9,7 +9,7 @@ if (!process.env.GOOGLE_CLIENT || !process.env.GOOGLE_SECRET)
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT,
+      clientId: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
       
     }),
