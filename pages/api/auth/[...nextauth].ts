@@ -3,23 +3,15 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 
-if (!process.env.GOOGLE_ID || !process.env.GOOGLE_SECRET)
+if (!process.env.GOOGLE_CLIENT || !process.env.GOOGLE_SECRET)
   throw new Error("Failed to initialize GOOGLE authentication");
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT,
+    clientId: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
-      profile(profile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.name || profile.login,
-          gh_username: profile.login,
-          email: profile.email,
-          image: profile.avatar_url,
-        };
-      },
+      
     }),
   ],
   pages: {
