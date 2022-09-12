@@ -11,6 +11,8 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      authorization:'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
+      
       profile(profile) {
         return {
           id: profile.id.toString(),
@@ -21,7 +23,8 @@ export const authOptions: NextAuthOptions = {
           }),
           ],
           secret: process.env.NEXTAUTH_SECRET,
-          
+         
+         
   pages: {
     signIn: `/login`,
     verifyRequest: `/login`,
@@ -30,7 +33,6 @@ export const authOptions: NextAuthOptions = {
 
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    
     session: ({ session, user }) => ({
       ...session,
       user: {
