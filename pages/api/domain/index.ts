@@ -10,7 +10,7 @@ export default async function domain(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  if (!session) return res.status(401).end();
+  //if (!session) return res.status(401).end();
 
   switch (req.method) {
     case HttpMethod.POST:
