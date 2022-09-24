@@ -1,29 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  /*
-   * The way you configure your matcher items depend on your route structure.
-   * E.g. if you decide to put all your posts under `/posts/[postSlug]`,
-   * you'll need to add an extra matcher item "/posts/:path*".
-   * The reason we do this is to prevent the middleware from matching absolute paths
-   * like "demo.vercel.pub/_sites/steven" and have the content from `steven` be served.
-   *
-   * Here's a breakdown of each matcher item:
-   * 1. "/"               - Matches the root path of the site.
-   * 2. "/([^/.]*)"       - Matches all first-level paths (e.g. demo.vercel.pub/platforms-starter-kit)
-   *                        but exclude `/public` files by excluding paths containing `.` (e.g. /logo.png)
-   * 3. "/site/:path*"    – for app.vercel.pub/site/[siteId]
-   * 4. "/post/:path*"    – for app.vercel.pub/post/[postId]
-   * 5. "/_sites/:path*"  – for all custom hostnames under the `/_sites/[site]*` dynamic route (demo.vercel.pub, platformize.co)
-   *                        we do this to make sure "demo.vercel.pub/_sites/steven" is not matched and throws a 404.
-   */
   matcher: [
-    // Comment to force multi-line for better diffs
-    "/",
-    "/([^/.]*)",
-    "/site/:path*",
-    "/post/:path*",
-    "/_sites/:path*",
+    /*
+     * Match all paths except for:
+     * 1. /api routes
+     * 2. /_next (Next.js internals)
+     * 3. /fonts (inside /public)
+     * 4. /examples (inside /public)
+     * 5. all root files inside /public (e.g. /favicon.ico)
+     */
+    "/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
   ],
 };
 
@@ -31,12 +18,12 @@ export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
-  const hostname = req.headers.get("host") || "localhost:3000";
+  const hostname = req.headers.get("host") || "demo.vercel.pub";
 
   // Only for demo purposes - remove this if you want to use your root domain as the landing page
-  //if (hostname === "localhost:3000" || hostname === "betoo.io") {
-  // return NextResponse.redirect("https://app.localhost:3000");
-  //}
+  if (hostname === "vercel.pub" || hostname === "platforms.vercel.app") {
+    return NextResponse.redirect("https://demo.vercel.pub");
+  }
 
   /*  You have to replace ".vercel.pub" with your own domain if you deploy this example under your domain.
       You can also use wildcard subdomains on .vercel.app links that are associated with your Vercel team slug
@@ -45,9 +32,9 @@ export default function middleware(req: NextRequest) {
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname
-          .replace(`localhost:3000`, "")
-          .replace(`*.vercel.app`, "")
-      : hostname.replace(`betoo.io`, "");
+          .replace(`.vercel.pub`, "")
+          .replace(`.platformize.vercel.app`, "")
+      : hostname.replace(`.localhost:3000`, "");
   // rewrites for app pages
   if (currentHost == "app") {
     if (
@@ -64,7 +51,7 @@ export default function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (hostname === "betoo.io" || hostname === "localhost") {
+  if (hostname === "localhost:3000" || hostname === "platformize.vercel.app") {
     url.pathname = `/home${url.pathname}`;
     return NextResponse.rewrite(url);
   }

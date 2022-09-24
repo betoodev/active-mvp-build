@@ -80,8 +80,8 @@ export default function Post({
           // if you are using Github OAuth, you can get rid of the Twitter option
           href={
             data.site?.user?.username
-              ? `https://google.com/${data.site.user.username}`
-              : `https://google.com/${data.site?.user?.username}`
+              ? `https://twitter.com/${data.site.user.username}`
+              : `https://github.com/${data.site?.user?.gh_username}`
           }
           rel="noreferrer"
           target="_blank"
@@ -124,10 +124,10 @@ export default function Post({
         )}
       </div>
 
-       {/* <article className="w-11/12 sm:w-3/4 m-auto prose prose-md sm:prose-lg">
+      <article className="w-11/12 sm:w-3/4 m-auto prose prose-md sm:prose-lg">
         <MDXRemote {...data.mdxSource} components={components} />
-      </article> 
- */}
+      </article>
+
       {adjacentPosts.length > 0 && (
         <div className="relative mt-10 sm:mt-20 mb-20">
           <div
