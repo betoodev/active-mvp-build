@@ -11,7 +11,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
   return (
-    <PlausibleProvider domain="demo.vercel.pub">
+    <PlausibleProvider domain="demo.betoo.io">
       <SessionProvider session={session}>
         <Component {...pageProps} />
       </SessionProvider>
