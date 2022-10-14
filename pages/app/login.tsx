@@ -1,24 +1,10 @@
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import LoadingDots from "@/components/app/loading-dots";
 import toast, { Toaster } from "react-hot-toast";
-import { Box, Button } from "@mui/material";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-
-import { Theme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { LightTheme, DarkTheme } from "theme/theme";
-import { ThemeContext } from "lib/ThemeContext";
 
 const pageTitle = "Login";
 const logo = "/favicon.ico";
@@ -37,26 +23,8 @@ export default function Login() {
     errorMessage && toast.error(errorMessage);
   }, [error]);
 
-  // switch theme
-
-  const { theme, setTheme } = useContext(ThemeContext);
-
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setTheme((prevTheme: Theme) =>
-          prevTheme === LightTheme ? DarkTheme : LightTheme
-        );
-        let temp = theme === LightTheme ? "dark" : "light";
-        localStorage.setItem("darkToggle", temp);
-        console.log(temp);
-      },
-    }),
-    []
-  );
-
   return (
-    <div className="min-h-screen bg-gray-100  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <Head>
         <title>{pageTitle}</title>
         <link rel="icon" href={logo} />
@@ -84,60 +52,6 @@ export default function Login() {
         <meta name="twitter:image" content={logo} />
       </Head>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex items-center justify-center mb-8">
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              bgcolor: "background.default",
-              color: "text.primary",
-              borderRadius: 1,
-              p: 3,
-            }}
-          >
-            {theme.palette.mode} mode
-            <IconButton
-              sx={{ ml: 1 }}
-              onClick={colorMode.toggleColorMode}
-              color="inherit"
-            >
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
-            </IconButton>
-          </Box>
-        </div>
-        <div className="mb-12">
-          <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                Word of the Day
-              </Typography>
-              <Typography variant="h5" component="div">
-                benevolent
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                adjective
-              </Typography>
-              <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card>
-        </div>
         <div className="relative mx-auto h-12 w-auto">
           <Image
             alt="Platforms Starter Kit"
