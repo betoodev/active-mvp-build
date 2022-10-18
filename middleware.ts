@@ -10,7 +10,7 @@ export const config = {
      * 4. /examples (inside /public)
      * 5. all root files inside /public (e.g. /favicon.ico)
      */
-    "/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
+    "/((?!api|authenticate|profile|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
   ],
 };
 
@@ -31,9 +31,7 @@ export default function middleware(req: NextRequest) {
       still need to add "*.platformize.vercel.app" as a wildcard domain on your Vercel dashboard. */
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
-      ? hostname
-          .replace(`.betoo.io`, "")
-          .replace(`.platformize.betoo.io`, "")
+      ? hostname.replace(`.betoo.io`, "").replace(`.platformize.betoo.io`, "")
       : hostname.replace(`.localhost:3000`, "");
   // rewrites for app pages
   if (currentHost == "app") {

@@ -1,10 +1,10 @@
 import Head from "next/head";
 
 import { useEffect, useState } from "react";
-//import LoginWithMagicLinks from "../../components/stytch-auth/LoginWithMagicLinks";
+import SLogin from "../../components/stytch-auth/SLogin";
 import withSession from "../../lib/withSession";
 
-import dynamic from "next/dynamic";
+/*import dynamic from "next/dynamic";
 
 const LoginWithMagicLinks = dynamic(
   () => {
@@ -12,7 +12,7 @@ const LoginWithMagicLinks = dynamic(
   },
   { ssr: false }
 );
-
+*/
 export default function Home(props) {
   //This state holds the projects associated with the user
   const [clientProjects, setClientProjects] = useState(null);
@@ -49,21 +49,26 @@ export default function Home(props) {
       <main>
         <div className="mt-10 m-auto text-center justify-center items-center bg-blue-100 p-8 rounded w-96 ">
           <h1>Welcome to betoo</h1>
-          {isLoggedIn ? (
-            <div>
-              <p>You are now logged in.</p>
-              <p>{user.email}</p>
-              <p className="m-2 text-xs text-left">{user.session_token}</p>
-              <p
-                style={{ textAlign: "center", cursor: "pointer" }}
-                onClick={logOut}
-              >
-                Log Out
-              </p>
-            </div>
-          ) : (
-            <LoginWithMagicLinks />
-          )}
+          <div className="m-6">
+            <SLogin></SLogin>
+          </div>
+          <div className="bg-red-200 p-6 mt-9">
+            {isLoggedIn ? (
+              <div>
+                <p>You are now logged in.</p>
+                <p>{user.email}</p>
+                <p className="m-2 text-xs text-left">{user.session_token}</p>
+                <p
+                  style={{ textAlign: "center", cursor: "pointer" }}
+                  onClick={logOut}
+                >
+                  Log Out
+                </p>
+              </div>
+            ) : (
+              <div>You are logged out.</div>
+            )}
+          </div>
         </div>
       </main>
     </div>

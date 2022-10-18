@@ -44,6 +44,7 @@ export default function AppIndex() {
 
   const router = useRouter();
 
+  //const { data: session } = useSession();
   const { data: session } = useSession();
   const sessionId = session?.user?.id;
 
