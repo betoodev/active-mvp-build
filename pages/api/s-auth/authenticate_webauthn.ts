@@ -1,18 +1,21 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import loadStytch from '../../lib/loadStytch';
-import Cookies from 'cookies';
+import type { NextApiRequest, NextApiResponse } from "next";
+import loadStytch from "../../../lib/loadStytch";
+import Cookies from "cookies";
 
 type ErrorData = {
   errorString: string;
 };
 
-export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
+export async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ErrorData>
+) {
   // Get session from cookie
   const cookies = new Cookies(req, res);
-  const storedSession = cookies.get('api_webauthn_session');
+  const storedSession = cookies.get("api_webauthn_session");
   // If session does not exist display an error
   if (!storedSession) {
-    return res.status(400).json({ errorString: 'No session provided' });
+    return res.status(400).json({ errorString: "No session provided" });
   }
   try {
     const stytchClient = loadStytch();
@@ -27,7 +30,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       session_token: storedSession,
     });
     // Save updated Stytch session to a cookie
-    cookies.set('api_webauthn_session', session_token, {
+    cookies.set("api_webauthn_session", session_token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 30, // 30 minutes
     });

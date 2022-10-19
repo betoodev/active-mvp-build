@@ -1,14 +1,17 @@
 // This API route sends a magic link to the specified email address.
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getDomainFromRequest } from '../../lib/urlUtils';
-import loadStytch from '../../lib/loadStytch';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getDomainFromRequest } from "../../../lib/urlUtils";
+import loadStytch from "../../../lib/loadStytch";
 
 type ErrorData = {
   errorString: string;
 };
 
-export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
-  if (req.method === 'POST') {
+export async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ErrorData>
+) {
+  if (req.method === "POST") {
     const stytchClient = loadStytch();
     const data = JSON.parse(req.body);
     try {
