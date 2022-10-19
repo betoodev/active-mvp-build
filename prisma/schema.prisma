@@ -15,6 +15,7 @@ generator client {
 
 model User {
   id            String        @id @default(cuid())
+  stytch_id     String        @unique
   name          String?
   // if you are using Github OAuth, you can get rid of the username attribute (that is for Twitter OAuth)
   username      String?

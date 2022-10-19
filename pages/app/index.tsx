@@ -13,6 +13,7 @@ import { HttpMethod } from "@/types";
 
 import type { FormEvent } from "react";
 import type { Site } from "@prisma/client";
+import { useStytchSession } from "@stytch/nextjs";
 
 export default function AppIndex() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -44,8 +45,8 @@ export default function AppIndex() {
 
   const router = useRouter();
 
-  //const { data: session } = useSession();
   const { data: session } = useSession();
+  //const { data: session } = useStytchSession();
   const sessionId = session?.user?.id;
 
   const { data: sites } = useSWR<Array<Site>>(
