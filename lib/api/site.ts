@@ -3,7 +3,9 @@ import prisma from "@/lib/prisma";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Site } from ".prisma/client";
-import type { Session } from "next-auth";
+import { validSessionToken } from "../../lib/StytchSession";
+import withSession from "../../lib/withSession";
+import loadStytch from "../../lib/loadStytch";
 
 /**
  * Get Site
@@ -14,13 +16,28 @@ import type { Session } from "next-auth";
  *
  * @param req - Next.js API Request
  * @param res - Next.js API Response
- * @param session - NextAuth.js session
+ 
  */
 export async function getSite(
   req: NextApiRequest,
-  res: NextApiResponse,
-  session: Session
+  res: NextApiResponse
 ): Promise<void | NextApiResponse<Array<Site> | (Site | null)>> {
+  const stytchClient = loadStytch();
+  var token = (req.query["token"] ||
+    req.cookies[process.env.COOKIE_NAME as string]) as string;
+
+  //validate session
+  var isValidSession = await validSessionToken(token);
+  if (!isValidSession) {
+    res.status(401).json({ error: "user unauthenticated" });
+    return;
+  }
+
+  // Validate Stytch session
+  const { session } = await stytchClient.sessions.authenticate({
+    session_token: token,
+  });
+
   const { siteId } = req.query;
 
   if (Array.isArray(siteId))
@@ -28,7 +45,7 @@ export async function getSite(
       .status(400)
       .end("Bad request. siteId parameter cannot be an array.");
 
-  if (!session.user.id)
+  if (!session.user_id)
     return res.status(500).end("Server failed to get session user ID");
 
   try {
@@ -37,7 +54,7 @@ export async function getSite(
         where: {
           id: siteId,
           user: {
-            id: session.user.id,
+            id: session.user_id,
           },
         },
       });
@@ -48,7 +65,7 @@ export async function getSite(
     const sites = await prisma.site.findMany({
       where: {
         user: {
-          id: session.user.id,
+          id: session.user_id,
         },
       },
     });

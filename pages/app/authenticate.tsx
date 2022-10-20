@@ -59,11 +59,11 @@ const Authenticate = () => {
       {
         /* sync user to db */
         //add user to DB
-        console.log("addUserToDB...");
-        addUserToDB(user);
+        console.log("app addUserToDB...");
+        //addUserToDB(user);
 
         console.log({ user });
-        router.replace("/profile");
+        router.replace("/");
       }
       console.log({ user });
       //router.replace("/profile");

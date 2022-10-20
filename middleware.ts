@@ -38,12 +38,15 @@ export default function middleware(req: NextRequest) {
   // rewrites for app pages
   if (currentHost == "app") {
     var token = process.env.COOKIE_NAME as string;
+    console.log("currentHost", currentHost);
     if (url.pathname === "/login" && req.cookies.get(token)) {
       url.pathname = "/";
+      console.log("redirecting1", currentHost);
       return NextResponse.redirect(url);
     }
 
     url.pathname = `/app${url.pathname}`;
+    console.log("redirecting2", url.pathname);
     return NextResponse.rewrite(url);
   }
 

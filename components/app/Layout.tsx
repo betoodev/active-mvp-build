@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import { signOut } from "next-auth/react";
+//import { signOut } from "next-auth/react";
 import Loader from "./Loader";
 import useRequireAuth from "../../lib/useRequireAuth";
 
@@ -60,7 +60,7 @@ export default function Layout({ siteId, children }: LayoutProps) {
         </Head>
         <div className="absolute left-0 right-0 h-16 border-b bg-white border-gray-200">
           <div className="flex justify-between items-center h-full max-w-screen-xl mx-auto px-10 sm:px-20">
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               <Link href="/">
                 <a className="flex justify-center items-center">
                   {session.user && session.user.image && (
@@ -81,11 +81,11 @@ export default function Layout({ siteId, children }: LayoutProps) {
               <div className="h-8 border border-gray-300" />
               <button
                 className="text-gray-500 hover:text-gray-700 transition-all ease-in-out duration-150"
-                onClick={() => signOut()}
+                // onClick={() => signOut()}
               >
                 Logout
               </button>
-            </div>
+            </div> */}
             <a
               className="font-cal flex items-center space-x-2 text-gray-700 px-5 py-3 sm:hover:text-black sm:hover:bg-white transition-all ease-in-out duration-150"
               href="https://github.com/vercel/platforms"

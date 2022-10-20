@@ -14,6 +14,7 @@ import { HttpMethod } from "@/types";
 import type { FormEvent } from "react";
 import type { Site } from "@prisma/client";
 import { useStytch, useStytchSession, useStytchUser } from "@stytch/nextjs";
+import is from "date-fns/esm/locale/is/index.js";
 
 export default function AppIndex() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -34,8 +35,9 @@ export default function AppIndex() {
 
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/");
+      //router.replace("/login");
     }
+    console.log("User and isInitialized: ", user, isInitialized);
   }, [user, isInitialized, router]);
 
   const signOut = async () => {
@@ -65,11 +67,12 @@ export default function AppIndex() {
   //console.log({ stytch_session });
 
   const sessionId = session?.user_id;
-
-  const { data: sites } = useSWR<Array<Site>>(
+  //console.log("app index session", { session });
+  /*const { data: sites } = useSWR<Array<Site>>(
     sessionId && `/api/site`,
     fetcher
-  );
+  );*/
+  const sites = [] as Array<Site>;
 
   async function createSite(e: FormEvent<HTMLFormElement>) {
     const res = await fetch("/api/site", {

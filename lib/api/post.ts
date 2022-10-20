@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Post, Site } from ".prisma/client";
-import type { Session } from "next-auth";
+//import type { Session } from "next-auth";
 import { revalidate } from "@/lib/revalidate";
 import { getBlurDataURL } from "@/lib/util";
 
@@ -26,7 +26,7 @@ interface AllPosts {
 export async function getPost(
   req: NextApiRequest,
   res: NextApiResponse,
-  session: Session
+  session: any
 ): Promise<void | NextApiResponse<AllPosts | (WithSitePost | null)>> {
   const { postId, siteId, published } = req.query;
 
@@ -37,7 +37,7 @@ export async function getPost(
   )
     return res.status(400).end("Bad request. Query parameters are not valid.");
 
-  if (!session.user.id)
+  if (!session.user_id)
     return res.status(500).end("Server failed to get session user ID");
 
   try {
