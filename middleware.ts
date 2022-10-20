@@ -10,7 +10,7 @@ export const config = {
      * 4. /examples (inside /public)
      * 5. all root files inside /public (e.g. /favicon.ico)
      */
-    "/((?!api|authenticate|profile|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
+    "/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
   ],
 };
 
@@ -35,11 +35,8 @@ export default function middleware(req: NextRequest) {
       : hostname.replace(`.localhost:3000`, "");
   // rewrites for app pages
   if (currentHost == "app") {
-    if (
-      url.pathname === "/login" &&
-      (req.cookies.get("next-auth.session-token") ||
-        req.cookies.get("__Secure-next-auth.session-token"))
-    ) {
+    var token = process.env.COOKIE_NAME as string;
+    if (url.pathname === "/login" && req.cookies.get(token)) {
       url.pathname = "/";
       return NextResponse.redirect(url);
     }

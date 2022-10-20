@@ -25,7 +25,7 @@ export default function AppIndex() {
   const siteNameRef = useRef<HTMLInputElement | null>(null);
   const siteSubdomainRef = useRef<HTMLInputElement | null>(null);
   const siteDescriptionRef = useRef<HTMLTextAreaElement | null>(null);
-
+  console.log("APP INDEX");
   useEffect(() => {
     async function checkSubDomain() {
       if (debouncedSubdomain.length > 0) {
@@ -46,7 +46,9 @@ export default function AppIndex() {
   const router = useRouter();
 
   const { data: session } = useSession();
-  //const { data: session } = useStytchSession();
+  const { data: stytch_session } = useStytchSession();
+  console.log({ session });
+  console.log({ stytch_session });
   const sessionId = session?.user?.id;
 
   const { data: sites } = useSWR<Array<Site>>(

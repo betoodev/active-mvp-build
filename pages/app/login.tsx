@@ -6,13 +6,36 @@ import { useRouter } from "next/router";
 import LoadingDots from "@/components/app/loading-dots";
 import toast, { Toaster } from "react-hot-toast";
 
+import SLogin from "../../components/stytch-auth/SLogin";
+import withSession from "../../lib/withSession";
+import { useStytchUser } from "@stytch/nextjs";
+
 const pageTitle = "Login";
 const logo = "/favicon.ico";
 const description =
   "Platforms Starter Kit is a comprehensive template for building multi-tenant applications with custom domains.";
 
-export default function Login() {
+export default function Login(props: any) {
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //User's session details
+  //const { user } = props;
+
+  const { user, isInitialized } = useStytchUser();
+  console.log({ user });
+  // Sets local isLoggedIn variable
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, [user]);
+
+  // Logs a user out
+  const logOut = async () => {
+    setIsLoggedIn(false);
+
+    const resp = await fetch("/api/s-auth/logout", { method: "POST" });
+  };
 
   // Get error message added by next/auth in URL.
   const { query } = useRouter();
@@ -77,7 +100,23 @@ export default function Login() {
       </div>
 
       <div className="mt-8 mx-auto sm:w-full w-11/12 sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
+        <SLogin />
+        {isLoggedIn ? (
+          <div>
+            <p>You are now logged in.</p>
+            <p>{user?.emails[0].email && user?.emails[0].email}</p>
+            <p className="m-2 text-xs text-left">{user?.user_id}</p>
+            <p
+              style={{ textAlign: "center", cursor: "pointer" }}
+              onClick={logOut}
+            >
+              Log Out
+            </p>
+          </div>
+        ) : (
+          <div>You are logged out.</div>
+        )}
+        {/* <div className="bg-white py-8 px-4 shadow-md sm:rounded-lg sm:px-10">
           <button
             disabled={loading}
             onClick={() => {
@@ -117,9 +156,19 @@ export default function Login() {
               <p className="text-white">Google</p>
             )}
           </button>
-        </div>
+        </div> */}
       </div>
       <Toaster />
     </div>
   );
 }
+
+const getServerSidePropsHandler = async ({ req }: any) => {
+  // Get the user's session based on the request
+  const user = req.session.get("user") ?? null;
+  console.log("session:", { user });
+  const props = { user };
+  return { props };
+};
+
+export const getServerSideProps = withSession(getServerSidePropsHandler);
