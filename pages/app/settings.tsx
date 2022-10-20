@@ -6,22 +6,23 @@ import LoadingDots from "@/components/app/loading-dots";
 import { HttpMethod } from "@/types";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+//import { useSession } from "next-auth/react";
 
 import type { UserSettings } from "@/types";
+import { useStytchSession } from "@stytch/nextjs";
 
 export default function AppSettings() {
-  const { data: session } = useSession();
+  const { session } = useStytchSession();
 
   const [saving, setSaving] = useState<boolean>(false);
   const [data, setData] = useState<UserSettings | null>(null);
 
-  useEffect(() => {
-    if (session)
-      setData({
-        ...session.user,
-      });
-  }, [session]);
+  // useEffect(() => {
+  //   if (session)
+  //     setData({
+  //       ...session.user,
+  //     });
+  // }, [session]);
 
   async function saveSettings(data: UserSettings | null) {
     setSaving(true);
@@ -58,12 +59,12 @@ export default function AppSettings() {
                   name="name"
                   placeholder="Your awesome name"
                   value={data?.name || ""}
-                  onInput={(e) =>
-                    setData({
-                      ...data,
-                      name: (e.target as HTMLTextAreaElement).value,
-                    })
-                  }
+                  // onInput={(e) =>
+                  //   setData({
+                  //     ...data,
+                  //     name: (e.target as HTMLTextAreaElement).value,
+                  //   })
+                  // }
                 />
               </div>
             </div>
@@ -76,12 +77,12 @@ export default function AppSettings() {
                   name="email"
                   placeholder="panic@thedis.co"
                   value={data?.email || ""}
-                  onInput={(e) =>
-                    setData({
-                      ...data,
-                      email: (e.target as HTMLTextAreaElement).value,
-                    })
-                  }
+                  // onInput={(e) =>
+                  //   setData({
+                  //     ...data,
+                  //     email: (e.target as HTMLTextAreaElement).value,
+                  //   })
+                  // }
                 />
               </div>
             </div>
@@ -92,13 +93,13 @@ export default function AppSettings() {
                   data?.image ? "" : "animate-pulse bg-gray-300 h-150"
                 } relative mt-5 w-48 border-2 border-gray-800 border-dashed rounded-md`}
               >
-                <CloudinaryUploadWidget
-                  callback={(e) =>
-                    setData({
-                      ...data,
-                      image: e.secure_url,
-                    })
-                  }
+                {/* <CloudinaryUploadWidget
+                  // callback={(e) =>
+                  //   setData({
+                  //     ...data,
+                  //     image: e.secure_url,
+                  //   })
+                  // }
                 >
                   {({ open }) => (
                     <button
@@ -116,7 +117,7 @@ export default function AppSettings() {
                       <p>Upload another image</p>
                     </button>
                   )}
-                </CloudinaryUploadWidget>
+                </CloudinaryUploadWidget> */}
 
                 {data?.image && (
                   <BlurImage
