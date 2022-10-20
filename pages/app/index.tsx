@@ -46,7 +46,7 @@ export default function AppIndex() {
   const router = useRouter();
 
   const { data: session } = useSession();
-  const { data: stytch_session } = useStytchSession();
+  const { stytch_session }: any = useStytchSession();
   console.log({ session });
   console.log({ stytch_session });
   const sessionId = session?.user?.id;
