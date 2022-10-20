@@ -1,14 +1,31 @@
 import { createSite, deleteSite, getSite, updateSite } from "@/lib/api";
-import { unstable_getServerSession } from "next-auth/next";
+//import { unstable_getServerSession } from "next-auth/next";
 
-import { authOptions } from "./auth/[...nextauth]";
+//import { authOptions } from "./auth/[...nextauth]";
 import { HttpMethod } from "@/types";
-
+import { validSessionToken } from "../../lib/StytchSession";
 import type { NextApiRequest, NextApiResponse } from "next";
+import withSession from "../../lib/withSession";
+import loadStytch from "../../lib/loadStytch";
 
-export default async function site(req: NextApiRequest, res: NextApiResponse) {
-  const session = await unstable_getServerSession(req, res, authOptions);
-  if (!session) return res.status(401).end();
+async function site(req: NextApiRequest, res: NextApiResponse) {
+  //const session = await unstable_getServerSession(req, res, authOptions);
+  const stytchClient = loadStytch();
+  var token = (req.query["token"] ||
+    req.cookies[process.env.COOKIE_NAME as string]) as string;
+
+  //validate session
+  var isValidSession = await validSessionToken(token);
+  if (!isValidSession) {
+    res.status(401).json({ error: "user unauthenticated" });
+    return;
+  }
+
+  // Validate Stytch session
+  const { session } = await stytchClient.sessions.authenticate({
+    session_token: token,
+  });
+  //if (!session) return res.status(401).end();
 
   switch (req.method) {
     case HttpMethod.GET:
@@ -29,3 +46,4 @@ export default async function site(req: NextApiRequest, res: NextApiResponse) {
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
+export default withSession(site);

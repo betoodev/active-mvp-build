@@ -13,7 +13,7 @@ import { HttpMethod } from "@/types";
 
 import type { FormEvent } from "react";
 import type { Site } from "@prisma/client";
-import { useStytchSession } from "@stytch/nextjs";
+import { useStytch, useStytchSession, useStytchUser } from "@stytch/nextjs";
 
 export default function AppIndex() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -25,7 +25,23 @@ export default function AppIndex() {
   const siteNameRef = useRef<HTMLInputElement | null>(null);
   const siteSubdomainRef = useRef<HTMLInputElement | null>(null);
   const siteDescriptionRef = useRef<HTMLTextAreaElement | null>(null);
-  console.log("APP INDEX");
+
+  // Stytch
+  const { user, isInitialized } = useStytchUser();
+  const { session } = useStytchSession();
+  const stytch = useStytch();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/");
+    }
+  }, [user, isInitialized, router]);
+
+  const signOut = async () => {
+    await stytch.session.revoke();
+  };
+
   useEffect(() => {
     async function checkSubDomain() {
       if (debouncedSubdomain.length > 0) {
@@ -43,13 +59,12 @@ export default function AppIndex() {
     checkSubDomain();
   }, [debouncedSubdomain]);
 
-  const router = useRouter();
-
-  const { data: session }: any = useStytchSession();
+  //const { data: session }: any = useStytchSession();
   //const { stytch_session }: any = useStytchSession();
-  console.log({ session });
+  //console.log({ session });
   //console.log({ stytch_session });
-  const sessionId = session?.user?.id;
+
+  const sessionId = session?.user_id;
 
   const { data: sites } = useSWR<Array<Site>>(
     sessionId && `/api/site`,

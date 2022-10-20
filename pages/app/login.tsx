@@ -84,7 +84,7 @@ export default function Login(props: any) {
           />
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Platforms Starter Kit
+          Betoo
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Build multi-tenant applications with custom domains. <br /> Read the{" "}

@@ -5,7 +5,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { urlPath } = req.body;
-  res.setHeader("Access-Control-Allow-Origin", "https://app.betoo.io");
+  const allowedOrigins = [
+    "https://app.betoo.io",
+    "http://localhost:3000",
+    "http://" + process.env.NEXT_PUBLIC_HTTPS_DOMAIN,
+    "https://" + process.env.NEXT_PUBLIC_HTTPS_DOMAIN,
+    "http://app." + process.env.NEXT_PUBLIC_HTTPS_DOMAIN,
+    "https://app." + process.env.NEXT_PUBLIC_HTTPS_DOMAIN,
+  ];
+
+  //res.setHeader("Access-Control-Allow-Origin", "https://app.betoo.io");
+  const origin = req.headers.origin || "";
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader("Access-Control-Allow-Methods", "POST");
 
   try {

@@ -32,7 +32,9 @@ export default function middleware(req: NextRequest) {
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname.replace(`.betoo.io`, "").replace(`.platformize.betoo.io`, "")
-      : hostname.replace(`.localhost:3000`, "");
+      : hostname
+          .replace(`.localhost:3000`, "")
+          .replace("." + process.env.NEXT_PUBLIC_HTTPS_DOMAIN, "");
   // rewrites for app pages
   if (currentHost == "app") {
     var token = process.env.COOKIE_NAME as string;
@@ -46,7 +48,11 @@ export default function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (hostname === "localhost:3000" || hostname === "betoo.io") {
+  if (
+    hostname === "localhost:3000" ||
+    hostname === "betoo.io" ||
+    hostname === process.env.NEXT_PUBLIC_HTTPS_DOMAIN
+  ) {
     url.pathname = `/home${url.pathname}`;
     return NextResponse.rewrite(url);
   }
