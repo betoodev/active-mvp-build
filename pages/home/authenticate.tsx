@@ -63,7 +63,7 @@ const Authenticate = () => {
         addUserToDB(user);
 
         console.log({ user });
-        //router.replace("/profile");
+        router.replace("/profile");
       }
       console.log({ user });
       //router.replace("/profile");

@@ -79,6 +79,7 @@ const getServerSidePropsHandler = async ({ req }) => {
   // Get the user's session based on the request
   const user = req.session.get("user") ?? null;
   const props = { user };
+  console.log({ user });
   return { props };
 };
 

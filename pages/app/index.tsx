@@ -4,7 +4,7 @@ import BlurImage from "@/components/BlurImage";
 import Modal from "@/components/Modal";
 import LoadingDots from "@/components/app/loading-dots";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+//import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
@@ -45,10 +45,10 @@ export default function AppIndex() {
 
   const router = useRouter();
 
-  const { data: session } = useSession();
-  const { stytch_session }: any = useStytchSession();
+  const { data: session }: any = useStytchSession();
+  //const { stytch_session }: any = useStytchSession();
   console.log({ session });
-  console.log({ stytch_session });
+  //console.log({ stytch_session });
   const sessionId = session?.user?.id;
 
   const { data: sites } = useSWR<Array<Site>>(
