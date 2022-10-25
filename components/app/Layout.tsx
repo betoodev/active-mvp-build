@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import useRequireAuth from "../../lib/useRequireAuth";
 
 import type { WithChildren } from "@/types";
+import { useStytchUser } from "@stytch/nextjs";
 
 interface LayoutProps extends WithChildren {
   siteId?: string;
@@ -25,10 +26,11 @@ export default function Layout({ siteId, children }: LayoutProps) {
   const tab = rootPage
     ? router.asPath.split("/")[1]
     : router.asPath.split("/")[3];
-
+  const { user, isInitialized } = useStytchUser();
   const session = useRequireAuth();
-  if (!session) return <Loader />;
 
+  if (!session) return <Loader />;
+  console.log("Layout", { session });
   return (
     <>
       <div>

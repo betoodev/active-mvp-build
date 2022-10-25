@@ -22,11 +22,11 @@ async function site(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  // Validate Stytch session
-  const { session } = await stytchClient.sessions.authenticate({
-    session_token: token,
-  });
-  if (!session) return res.status(401).end();
+  // // Validate Stytch session
+  // const { session } = await stytchClient.sessions.authenticate({
+  //   session_token: token,
+  // });
+  // if (!session) return res.status(401).end();
 
   switch (req.method) {
     case HttpMethod.GET:

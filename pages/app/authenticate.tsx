@@ -60,7 +60,7 @@ const Authenticate = () => {
         /* sync user to db */
         //add user to DB
         console.log("app addUserToDB...");
-        //addUserToDB(user);
+        addUserToDB(user);
 
         console.log({ user });
         router.replace("/");

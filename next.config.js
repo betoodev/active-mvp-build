@@ -10,6 +10,6 @@ module.exports = {
       "avatars.githubusercontent.com",
     ],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: false, // Required to fix: https://nextjs.org/docs/messages/failed-loading-swc
 };

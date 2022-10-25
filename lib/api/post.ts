@@ -47,7 +47,7 @@ export async function getPost(
           id: postId,
           site: {
             user: {
-              id: session.user.id,
+              id: session.user_id,
             },
           },
         },
@@ -63,7 +63,7 @@ export async function getPost(
       where: {
         id: siteId,
         user: {
-          id: session.user.id,
+          id: session.user_id,
         },
       },
     });

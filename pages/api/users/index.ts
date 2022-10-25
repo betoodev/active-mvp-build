@@ -24,9 +24,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "GET") {
-    getUsers(req, res);
+    console.log("GET getUsers");
+    return getUsers(req, res);
   } else if (req.method === "POST") {
-    addUser(req, res);
+    return addUser(req, res);
   }
   return;
 }
@@ -43,12 +44,25 @@ async function getUsers(req: NextApiRequest, res: NextApiResponse) {
     //   .then(([rows]) => {
     //     users = rows;
     //   });
-    const response = await prisma.user.findMany({});
+    var response = null;
+    // var user = JSON.parse(req.body);
+    // console.log({ user });
+    // if (user) {
+    //   response = await prisma.user.findUnique({
+    //     where: {
+    //       stytch_id: user.stytch_id,
+    //     },
+    //   });
+    // } else {
+    console.log("getting prisma.user.findMany");
+    response = await prisma.user.findMany({});
+    // }
+    console.log({ response });
 
-    res.status(200).json({ response });
+    return res.status(200).json({ response });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "an error occurred" });
+    return res.status(500).json({ error: "an error occurred" });
   }
   return;
 }
@@ -62,20 +76,6 @@ async function addUser(req: NextApiRequest, res: NextApiResponse) {
   var name = user.fullName;
 
   try {
-    // var query = "INSERT INTO User (name, email) VALUES (?,?)";
-    // var params = [name, email];
-
-    // var insertID;
-    // const result = sqlConn.query(query, params, (err, result) => {
-    //   console.log("Inserting user to db...");
-    //   if (err) {
-    //     console.log("Error insert:", err);
-    //     throw err;
-    //   }
-
-    //   insertID = (<OkPacket>result).insertId;
-    //   console.log("insertID", insertID);
-    //   res.status(201).json({ id: insertID });
     const response = await prisma.user.create({
       data: {
         stytch_id,

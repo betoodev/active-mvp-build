@@ -13,7 +13,6 @@ export default function App({
   const stytch = createStytchUIClient(
     process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN!
   );
-  console.log("_app session", session);
   return (
     <PlausibleProvider domain="demo.betoo.io">
       <StytchProvider stytch={stytch}>
